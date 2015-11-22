@@ -6,9 +6,5 @@
       (when (not (port-closed? file))
         (let ([next-line (read-line file)])
           (if (eof-object? next-line)
-              (begin
-                (close-input-port file)
-                (void))
+              (close-input-port file)
             next-line))))))
-
-(define (collect-lines filename num-elems))
