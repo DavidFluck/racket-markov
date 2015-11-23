@@ -11,23 +11,8 @@
               (close-input-port file)
             next-line))))))
 
-; Create a closure that returns a certain number of "words" from a file.
-(define (make-line-collector filename num-elems)
-  (let ([line-reader (make-line-reader filename)]
-        [word-list '()])
-    (lambda ()
-      (cond
-        [(< (length word-list) num-elems)
-         (let ([next-line (line-reader)])
-            (if (not (void? next-line))
-                (set! word-list (append word-list (string-split next-line)))
-              (void)))]
-        [else
-         (let ([ret-list (take word-list num-elems)])
-           (begin
-             (set! word-list (drop word-list num-elems))
-             ret-list))]))))
-
+; This function takes a certain number of elements, a starting list, and a line-reader closure, and returns lists of
+; words, with each list being num-elems in length.
 (define (get-words num-elems buffer line-reader)
   (if (< (length buffer) num-elems)
       (let ([next-line (line-reader)])
