@@ -11,18 +11,8 @@
               (close-input-port file)
             next-line))))))
 
-; This function takes a certain number of elements, a starting list, and a line-reader closure, and returns lists of
-; words, with each list being num-elems in length.
-(define (get-words num-elems buffer line-reader)
-  (if (< (length buffer) num-elems)
-      (let ([next-line (line-reader)])
-        (if (void? next-line)
-            (void)
-          (get-words num-elems (append buffer (string-split next-line)) line-reader)))
-    (begin
-      (print (take buffer num-elems))
-      (get-words num-elems (drop buffer num-elems) line-reader))))
-
+; This function takes a certain number of elements, a starting list, and a line-reader closure, and returns a generator
+; which returns a list of word num-elems elements in length.
 (define (word-gen num-elems buffer line-reader)
   (generator ()
     (let get-words ([my-num-elems num-elems]
